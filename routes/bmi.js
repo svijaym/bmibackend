@@ -3,6 +3,9 @@ const app = express();
 const router = express.Router();
 const bmi_model = require("../models/bmi_Schema");
 
+router.get("/", async (req, res) => {
+  res.send("Wel Come to BMI Calculator");
+});
 router.get("/bmi", async (req, res) => {
   let data = await bmi_model.find();
   console.log(data);
@@ -22,12 +25,10 @@ router.post("/register", async (req, res) => {
       password: password,
     });
     await new_user.save();
-    res
-      .status(201)
-      .send({
-        message: "Registered Succesfully",
-        data: { name: name, email: email, password: password },
-      });
+    res.status(201).send({
+      message: "Registered Succesfully",
+      data: { name: name, email: email, password: password },
+    });
   } catch (e) {
     res.status(401).send({ message: "user not created,try again" });
   }
@@ -55,7 +56,7 @@ router.post("/login", async (req, res) => {
 router.post("/bmi", async (req, res) => {
   let { email, weight, height } = req.body;
   console.log(weight, height, email);
-  let bmi = +(weight) / (+(height) * 0.3048) ** 2;
+  let bmi = +weight / (+height * 0.3048) ** 2;
   console.log(bmi);
 
   try {
